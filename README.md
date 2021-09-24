@@ -81,3 +81,4 @@ environment variables that are relevant to HW3 and Cori@NERSC.
 
 
 #eof
+# HW3
