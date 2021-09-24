@@ -14,16 +14,27 @@ const char* dgemv_desc = "OpenMP dgemv.";
 
 void my_dgemv(int n, double* A, double* x, double* y) {
 
-   #pragma omp parallel
+  /* #pragma omp parallel
    {
       int nthreads = omp_get_num_threads();
       int thread_id = omp_get_thread_num();
       printf("Hello world: thread %d of %d checking in. \n", thread_id, nthreads);
-   }
+   }   */
 
    // insert your dgemv code here. you may need to create additional parallel regions,
    // and you may want to comment out the above parallel code block that prints out
    // nthreads and thread_id so as to not taint your timings
-
+   
+   omp_set_dynamic(1);     // Explicitly disable dynamic teams
+   omp_set_num_threads(64);
+   #pragma omp parallel for  
+    for (int i=0;i<n;i++){
+      #pragma omp parallel for    
+       for(int j=0;j<n;j++){
+       y[i] += A[j + i * n] * x[j];
+       }}
 }
+
+
+
 
